@@ -1,0 +1,6 @@
+-- ELEC 379 Assignment 3 Solutions -- Ed Casas, October 9, 1998
+-- Simple Computer Assignment (top-level)
+library ieee ;
+use ieee.std_logic_1164.all ; use ieee.std_logic_arith.all ;
+use work.cputypes.all ;
+use work.cpucomponents.all ;

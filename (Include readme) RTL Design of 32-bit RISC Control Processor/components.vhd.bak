@@ -1,0 +1,53 @@
+library ieee ;
+use ieee.std_logic_1164.all ;
+use ieee.std_logic_arith.all ;
+use work.defines.all ;
+package cpucomponents is
+-- RAM
+component ram
+port (
+din : in dword ;
+a : in addr ;
+write, clk : in std_logic ;
+d_out : out dword
+) ;
+end component ;
+-- ROM
+component rom
+port (
+address : in addr ;
+instr : out iword
+) ;
+end component ;
+-- alu
+component alu
+port (
+d : in dword ; -- addressed RAM data
+ia : in addr ; -- instruction address
+op : in alu_opcode ; -- alu operation (=opcode)
+clk : in std_logic ; -- clock
+a_out : out dword ; -- current accumulator
+zero, negative : out std_logic -- flags
+) ;
+end component ;
+-- pc
+component pc
+port (
+ia : in addr ; -- instruction address
+op : in pc_opcode ; -- opcode
+reset : in std_logic ;
+clk : in std_logic ;
+pc_out : out addr -- current program counter
+) ;
+end component ;
+-- decoder
+component decoder
+port (
+instr : in iword ; -- instruction
+zero, negative : in std_logic ; -- flags
+aluop : out opcode ; -- ALU operation
+pcop : out pc_opcode ; -- PC operation
+write : out std_logic -- RAM write
+) ;
+end component ;
+end cpucomponents;

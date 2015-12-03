@@ -1,0 +1,44 @@
+-- ELEC 379 Assignment 3 Solutions
+-- Ed Casas, October 9, 1998
+-- ALU Datapath
+library ieee ;
+use ieee.std_logic_1164.all ;
+use ieee.std_logic_arith.all ;
+use work.cputypes.all ;
+entity alu is
+port (
+d : in dword ; -- addressed RAM data
+ia : in addr ; -- address field
+op : in alu_opcode ; -- alu operation
+clk : in std_logic ; -- clock
+a_out : out dword ; -- current accumulator
+zero, negative : out std_logic -- result flags
+) ;
+end alu ;
+architecture rtl of alu is
+signal a, nexta : dword ;
+begin
+-- ALU operations
+with op select nexta <=
+d when load,
+unsigned("000" & ia) when loadi,
+d + a when addop,
+unsigned(not
+std_logic_vector(a)) when notop,
+unsigned(std_logic_vector(d) and
+std_logic_vector(a)) when andop,
+a when others ;
+-- zero and negative flags from accumulator
+zero <=
+’1’ when a = 0 else
+’0’ ;
+negative <= a(7) ;
+-- accumulator register
+process(clk)
+begin
+if clk’event and clk = ’1’ then
+a <= nexta ;
+end if ;
+end process ;
+a_out <= a ;
+end rtl ;
